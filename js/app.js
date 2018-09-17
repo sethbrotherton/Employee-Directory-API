@@ -9,42 +9,53 @@ $.ajax({
   success: function(data) {
     employees = data.results;
     appendCardsToPage();
-    addModal(num);
+    addModal();
   }
 });
 
 
-let $cards;
-function cardModal () {
-  $cards = $('.card');
-  $cards.click(function() {
-    $(this).css('backgroundColor', 'green');
-  });
+function capitalize(str) {
+  let capitalizedStr = str.charAt(0).toUpperCase() + str.substr(1);
+  return capitalizedStr;
 }
 
 
-let num;
+function titleCase(str) {
+   var splitStr = str.toLowerCase().split(' ');
+   for (let i = 0; i < splitStr.length; i++) {
+       splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+   }
+   return splitStr.join(' ');
+}
+
+
+function formatDob(str) {
+  let month = str.charAt(5) + str.charAt(6);
+  let date = str.charAt(8) + str.charAt(9);
+  let year = str.charAt(2) + str.charAt(3);
+  let formatedDob = `${month}/${date}/${year}`;
+  return formatedDob;
+}
+
+
 let arrayNum;
-function addModal(num) {
+function addModal() {
     $cards = $('.card');
     $cards.click(function(event) {
-    num = 0;
-    num += parseInt(($(this).attr('id')));
-    //arrayNum = arrayOfCards.indexOf(event.target.attr('id'));
     arrayNum = parseInt($(this).attr('id'));
     $('body').append(
-      `<div class="modal-container" id="${num + 12}">
+      `<div class="modal-container">
           <div class="modal">
               <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
               <div class="modal-info-container">
-                <img class="modal-img" src="${employees[num].picture.large}" alt="profile picture">
-                <h3 id="name" class="modal-name cap">${employees[num].name.first} ${employees[num].name.last}</h3>
-                <p class="modal-text">${employees[num].email}</p>
-                <p class="modal-text cap">${employees[num].location.city}</p>
+                <img class="modal-img" src="${employees[arrayNum].picture.large}" alt="profile picture">
+                <h3 id="name" class="modal-name cap">${employees[arrayNum].name.first} ${employees[arrayNum].name.last}</h3>
+                <p class="modal-text">${employees[arrayNum].email}</p>
+                <p class="modal-text cap">${employees[arrayNum].location.city}</p>
                 <hr>
-                <p class="modal-text">${employees[num].phone}</p>
-                <p class="modal-text">${employees[num].location.street}, ${employees[num].location.city}, ${employees[num].location.state} ${employees[num].location.postcode}</p>
-                <p class="modal-text">Birthday: ${employees[num].dob.date}</p>
+                <p class="modal-text">${employees[arrayNum].phone}</p>
+                <p class="modal-text">${titleCase(employees[arrayNum].location.street)}, ${capitalize(employees[arrayNum].location.city)}, ${capitalize(employees[arrayNum].location.state)} ${employees[arrayNum].location.postcode}</p>
+                <p class="modal-text">Birthday: ${formatDob(employees[arrayNum].dob.date)}</p>
             </div>
           </div>
           <div class="modal-btn-container">
@@ -72,45 +83,9 @@ function addNextButtonEvent() {
   let $nextButton = $('#modal-next');
   $nextButton.click(function() {
     console.log('you did click it');
-  //  let arrayNum = 0;
     arrayNum += 1;
     let $modalContainer = $('.modal-container');
-    $modalContainer.remove();
-    $('body').append(
-      `<div class="modal-container">
-          <div class="modal">
-              <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-              <div class="modal-info-container">
-                <img class="modal-img" src="${employees[arrayNum].picture.large}" alt="profile picture">
-                <h3 id="name" class="modal-name cap">${employees[arrayNum].name.first} ${employees[arrayNum].name.last}</h3>
-                <p class="modal-text">${employees[arrayNum].email}</p>
-                <p class="modal-text cap">${employees[arrayNum].location.city}</p>
-                <hr>
-                <p class="modal-text">${employees[arrayNum].phone}</p>
-                <p class="modal-text">${employees[arrayNum].location.street}, ${employees[arrayNum].location.city}, ${employees[arrayNum].location.state} ${employees[arrayNum].location.postcode}</p>
-                <p class="modal-text">Birthday: ${employees[arrayNum].dob.date}</p>
-              </div>
-            </div>
-            <div class="modal-btn-container">
-                <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                <button type="button" id="modal-next" class="modal-next btn">Next</button>
-            </div>
-          </div>`
-       );
-        addCloseModalEvent();
-        addNextButtonEvent();
-        addPrevButtonEvent();
-    });
-  }
-
-
-  function addPrevButtonEvent() {
-    let $prevButton = $('#modal-prev');
-    $prevButton.click(function() {
-      console.log('you did click it');
-    //  let arrayNum = 0;
-      arrayNum -= 1;
-      let $modalContainer = $('.modal-container');
+    if (arrayNum < 12) {
       $modalContainer.remove();
       $('body').append(
         `<div class="modal-container">
@@ -123,8 +98,8 @@ function addNextButtonEvent() {
                   <p class="modal-text cap">${employees[arrayNum].location.city}</p>
                   <hr>
                   <p class="modal-text">${employees[arrayNum].phone}</p>
-                  <p class="modal-text">${employees[arrayNum].location.street}, ${employees[arrayNum].location.city}, ${employees[arrayNum].location.state} ${employees[arrayNum].location.postcode}</p>
-                  <p class="modal-text">Birthday: ${employees[arrayNum].dob.date}</p>
+                  <p class="modal-text">${titleCase(employees[arrayNum].location.street)}, ${capitalize(employees[arrayNum].location.city)}, ${capitalize(employees[arrayNum].location.state)} ${employees[arrayNum].location.postcode}</p>
+                  <p class="modal-text">Birthday: ${formatDob(employees[arrayNum].dob.date)}</p>
                 </div>
               </div>
               <div class="modal-btn-container">
@@ -136,6 +111,48 @@ function addNextButtonEvent() {
           addCloseModalEvent();
           addNextButtonEvent();
           addPrevButtonEvent();
+      } else if (arrayNum >= 12){
+        arrayNum -= 1;
+      }
+    });
+  }
+
+
+  function addPrevButtonEvent() {
+    let $prevButton = $('#modal-prev');
+    $prevButton.click(function() {
+      console.log('you did click it');
+      arrayNum -= 1;
+      let $modalContainer = $('.modal-container');
+      if (arrayNum >= 0) {
+        $modalContainer.remove();
+        $('body').append(
+          `<div class="modal-container">
+              <div class="modal">
+                  <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                  <div class="modal-info-container">
+                    <img class="modal-img" src="${employees[arrayNum].picture.large}" alt="profile picture">
+                    <h3 id="name" class="modal-name cap">${employees[arrayNum].name.first} ${employees[arrayNum].name.last}</h3>
+                    <p class="modal-text">${employees[arrayNum].email}</p>
+                    <p class="modal-text cap">${employees[arrayNum].location.city}</p>
+                    <hr>
+                    <p class="modal-text">${employees[arrayNum].phone}</p>
+                    <p class="modal-text">${titleCase(employees[arrayNum].location.street)}, ${capitalize(employees[arrayNum].location.city)}, ${capitalize(employees[arrayNum].location.state)} ${employees[arrayNum].location.postcode}</p>
+                    <p class="modal-text">Birthday: ${formatDob(employees[arrayNum].dob.date)}</p>
+                  </div>
+                </div>
+                <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                </div>
+              </div>`
+           );
+            addCloseModalEvent();
+            addNextButtonEvent();
+            addPrevButtonEvent();
+          } else if (arrayNum < 0) {
+            arrayNum += 1;
+          }
       });
     }
 
@@ -149,7 +166,7 @@ function appendCardsToPage () {
         <div class="card-info-container">
             <h3 id="name" class="card-name cap">${person.name.first} ${person.name.last}</h3>
             <p class="card-text">${person.email}</p>
-            <p class="card-text cap">${person.location.city}, ${person.location.state}</p>
+            <p class="card-text cap">${person.location.city}</p>
         </div>
     </div>`);
   });
