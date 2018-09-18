@@ -1,4 +1,4 @@
-/* ===================================== 
+/* =====================================
    Public API Request
 ======================================== */
 
@@ -16,7 +16,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(66, 244, 220, 0.9);
 }
 
 header {
@@ -29,7 +29,7 @@ header {
 }
 
 header h1 {
-    font-size: 1.25em;
+    font-size: 1.8em;
     color: rgba(50, 50, 50, 0.9);
     margin-top: 35px;
 }
@@ -63,7 +63,7 @@ header h1 {
 }
 
 
-/* ===================================== 
+/* =====================================
    Gallery
 ======================================== */
 
@@ -76,7 +76,7 @@ header h1 {
     max-width: 1200px;
     margin: auto;
 }
-  
+
 .card {
     display: flex;
     flex-direction: row;
@@ -88,9 +88,9 @@ header h1 {
     margin: 10px 10px 20px;
     padding: 10px;
     background: rgba(245, 245, 245, 0.9);
-    border-radius: 0.25em;
+    border-radius: 0.45em;
     border: 1px solid rgba(50, 50, 50, 0.3);
-    transition: .4s ease-out;
+    transition: .3s ease-out;
     overflow: hidden;
 }
 
@@ -112,7 +112,7 @@ header h1 {
     font-size: 0.9em;
     color: rgba(50, 50, 50, 0.7);
     margin: 7px auto;
-    transition: .4s ease-out;
+    transition: .3s ease-out;
 }
 
 .cap {
@@ -120,7 +120,7 @@ header h1 {
 }
 
 
-/* ===================================== 
+/* =====================================
    Modal
 ======================================== */
 
@@ -162,6 +162,7 @@ header h1 {
     width: 150px;
     margin-top: 35px;
     border-radius: 50%;
+		border: 5px solid seagreen;
 }
 
 .modal-name {
@@ -206,13 +207,15 @@ header h1 {
     transition: .4s ease-out;
     outline: none;
   }
-  
 
-/* ===================================== 
+
+
+
+/* =====================================
    Media Queries
 ======================================== */
 
-/* ===================================== 
+/* =====================================
    Tablet
 ======================================== */
 
@@ -237,12 +240,13 @@ header h1 {
     .modal {
         margin-top: 100px;
     }
+
 }
 
 
-/* ===================================== 
+/* =====================================
    Desktop
-   Hover styles on desktop 
+   Hover styles on desktop
 ======================================== */
 
 @media (min-width: 1024px) {
@@ -250,14 +254,15 @@ header h1 {
     .card:hover {
         background: rgba(255, 255, 255, 1);
         border: 1px solid rgba(50, 50, 50, 0.9);
+				transform: scale(1.05);
     }
 
     .card:hover .card-text {
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 
     .btn:hover {
         background: rgba(255, 255, 255, 1);
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 }
